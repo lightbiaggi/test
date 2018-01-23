@@ -34,9 +34,6 @@ namespace testperoject.Controllers
                     // load xml file
 
                     var document = new Document(path);
-
-                    // save into database - 
-                        message = "File uploaded successfully!";
                     }
                     catch (Exception ex)
                     {

@@ -14,7 +14,7 @@ namespace testperoject.Models
 
         public Document(string path)
         {
-          document  =   XDocument.Load(path);
+            document  =   XDocument.Load(path);
             clients = new List<Client>();
         }
 
