@@ -2,55 +2,11 @@
 @{
     ViewBag.Title = "Home Page";
 }
-<script type="text/javascript">
-
-    var jqXHRData;
-
-    $(document).ready(function () {
-
-        //Initialization of fileupload
-        initSimpleFileUpload();
-
-        //Handler for "Start upload" button
-        $("#hl-start-upload").on('click', function () {
-            if (jqXHRData) {
-                jqXHRData.submit();
-            }
-            return false;
-        });
-    });
-
-    function initSimpleFileUpload() {
-        'use strict';
-
-        $('#fu-my-simple-upload').fileupload({
-            url: '/Home/UploadFile',
-            dataType: 'json',
-            add: function (e, data) {
-                jqXHRData = data
-            },
-            done: function (event, data) {
-                if (data.result.isUploaded) {
-
-                }
-                else {
-
-                }
-                alert(data.result.message);
-            },
-            fail: function (event, data) {
-                if (data.files[0].error) {
-                    alert(data.files[0].error);
-                }
-            }
-        });
-    }
-</script>
 
 <div class="row">
-    <div class="col-md-4">
         <h4>Select the file to load</h4>
-        <form>
+      @using (Html.BeginForm("UploadFile", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+      {
             <div class="form-group">
                 <label for="txtFile">FileName:</label>
                 <input type="text" class="form-control" name="FileName" id="txtFile">
@@ -59,8 +15,7 @@
                 @Html.TextBoxFor(m => m.File, new { id = "fu-my-simple-upload", type = "file" })
             </div>
             <div>
-                <a href="#" id="hl-start-upload" class="btn btn-primary">Start upload</a>
+                <input class="btn btn-primary" type="submit" value="Start upload" />
             </div>
-        </form>
-    </div>
+      }
 </div>

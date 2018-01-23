@@ -16,32 +16,45 @@ namespace testperoject.Controllers
         }
 
         [HttpPost]
-        public virtual ActionResult UploadFile()
+        public virtual ActionResult UploadFile(HttpPostedFileBase file)
         {
-            HttpPostedFileBase loadedFile = Request.Files["MyFile"];
-            bool isUploaded = false;
             string message = "File upload failed";
 
-            if (loadedFile != null && Request.ContentLength != 0)
+            if (file != null && Request.ContentLength != 0)
             {
                 string pathForSaving = Server.MapPath("~/Uploads");
-                    try
-                    {
-                    var path = Path.Combine(pathForSaving, loadedFile.FileName);
-                    loadedFile.SaveAs(path);
-                        isUploaded = true;
+                var resultsModel = new Results();
+                try
+                {
+                    var path = Path.Combine(pathForSaving, file.FileName);
+                    file.SaveAs(path);
 
                     // load xml file
 
                     var document = new Document(path);
-                    }
-                    catch (Exception ex)
+
+                    foreach (var c in document.Clients)
                     {
-                        message = string.Format("File upload failed: {0}", ex.Message);
+                        if (!DataAdapter.HasClient(c))
+                        {
+                            DataAdapter.AddClient(c);
+                            resultsModel.AddedClients.Add(c);
+                        }
+                        else
+                        {
+                            DataAdapter.UpdateClient(c);
+                            resultsModel.UpdatedClients.Add(c);
+                        }
                     }
-                
+                }
+                catch (Exception ex)
+                {
+                    message = string.Format("File upload failed: {0}", ex.Message);
+                    return View("Error");
+                }
+                return View("Results", resultsModel);
             }
-            return Json(new { isUploaded = isUploaded, message = message }, "text/html");
+            return View();
         }
 
     }

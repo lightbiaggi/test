@@ -1,0 +1,7 @@
+BEGIN TRANSACTION;
+CREATE TABLE IF NOT EXISTS `Client` (
+	`FirstName`	TEXT,
+	`LastName`	TEXT,
+	`DOB`	NUMERIC
+);
+COMMIT;

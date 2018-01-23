@@ -9,7 +9,7 @@ namespace testperoject.Models
 {
     public class Client
     {
-        private XElement ClientRoot; 
+        private XElement ClientRoot;
 
         public Client(XElement root)
         {
@@ -24,12 +24,13 @@ namespace testperoject.Models
                 string fn = null;
                 if (firstname != null)
                 {
-                    fn =  firstname.Value;
-                }else
+                    fn = firstname.Value;
+                }
+                else
                 {
                     //to do throw exception  
                 }
-                return fn;                     
+                return fn;
 
             }
         }
@@ -51,21 +52,38 @@ namespace testperoject.Models
                 return ln;
 
             }
-      
+
+        }
+
+        public int Account
+        {
+            get
+            {
+                XElement account = ClientRoot.Element("acc");
+                int acc = 0;
+                if (account == null || !int.TryParse(account.Value, out acc))
+                {
+                    // exception todo
+                }
+                return acc;
+
+            }
+
         }
 
         public DateTime DOB
         {
-            get {
+            get
+            {
                 XElement xDob = ClientRoot.Element("dob");
-                DateTime dob  = DateTime.Now ;
-                if (xDob == null || !DateTime.TryParse(xDob.Value,out dob) )
+                DateTime dob = DateTime.Now;
+                if (xDob == null || !DateTime.TryParse(xDob.Value, out dob))
                 {
                     //to do throw exception  
                 }
-          
+
                 return dob;
-            }         
+            }
         }
     }
 }
